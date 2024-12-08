@@ -5,28 +5,38 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerInput playerInput;
+ 
     Vector2 moveInput;
-    public float moveSpeed;
+   
+    public Rigidbody2D rb;
+    public PlayerInput playerInput;
+    public float sprintMod;
+    public float moveSpeed;  
+    
     float moveInputX;
     float velocityX;
     float velocityY;
-    public Rigidbody2D rb;
+
+    InputAction sprint;
 
     void Start()
     {
-        
+        sprint = playerInput.actions.FindAction("Sprint");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+           if (sprint.WasReleasedThisFrame())
+        {
+            moveSpeed = moveSpeed / (sprintMod);
+        }
     }
 
     private void FixedUpdate()
     {
         MoveSideways();
+   
     }
 
     public void MoveSideways()
@@ -35,14 +45,18 @@ public class PlayerController : MonoBehaviour
         velocityY = rb.velocity.y;
         rb.velocity = new Vector2(velocityX, velocityY);
         
+
     }
 
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
         moveInputX = moveInput.x;
-        Debug.Log(value);
     }
 
-
+    public void OnSprint()
+    {
+        moveSpeed *= sprintMod;
+        
+    }
 }
