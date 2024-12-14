@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;  
     
     float moveInputX;
+    float moveInputY;
     float velocityX;
     float velocityY;
 
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     public void MoveSideways()
     {
         velocityX = moveInputX * Time.deltaTime * moveSpeed;
-        velocityY = rb.velocity.y;
+        velocityY = moveInputY * Time.deltaTime * moveSpeed;
         rb.velocity = new Vector2(velocityX, velocityY);
         
 
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = value.Get<Vector2>();
         moveInputX = moveInput.x;
+        moveInputY = moveInput.y;
     }
 
     public void OnSprint()
