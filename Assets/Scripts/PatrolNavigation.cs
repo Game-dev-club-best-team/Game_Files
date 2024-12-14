@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,11 +9,18 @@ public class PatrolNavigation : MonoBehaviour
     [SerializeField] Transform target;
     NavMeshAgent agent;
     float distance;
+    Rigidbody2D rb;
+    Vector3 facingDirection;
+    quaternion rotation;
+    [SerializeField] float rotationSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody2D>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
@@ -20,5 +28,9 @@ public class PatrolNavigation : MonoBehaviour
     {
 
         agent.SetDestination(target.position);
+        facingDirection = agent.velocity;
+        Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+
     }
 }
