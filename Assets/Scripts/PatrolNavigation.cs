@@ -43,18 +43,13 @@ public class PatrolNavigation : MonoBehaviour
         facingDirection = agent.velocity;
         Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        for(int i = 0; i < targets.Length; i++)
-        {
-            currentTarget = targets[i];
-            while(transform.position != currentTarget.position) { 
-                agent.SetDestination(currentTarget.position);
-            }
-            
-        }
     }
 
     public void Patrol()
     {
-        
+        while (!playerSensed)
+        {
+            Debug.Log("Where are you?");
+        }
     }
 }
