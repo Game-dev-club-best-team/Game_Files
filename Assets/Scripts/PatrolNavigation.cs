@@ -16,6 +16,8 @@ public class PatrolNavigation : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] Transform[] targets;
     public bool playerSensed;
+    [SerializeField] Transform player;
+    float playerDistance;
 
     // Start is called before the first frame update
     void Start()
@@ -30,23 +32,24 @@ public class PatrolNavigation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
+        playerDistance = Vector2.Distance(transform.position, player.position);
+        if (playerDistance <= 5)
+        {
+            playerSensed = true;
+            currentTarget = player;
+        }
+       
         agent.SetDestination(currentTarget.position);
         facingDirection = agent.velocity;
         Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        */
-        while (!playerSensed)
+        for(int i = 0; i < targets.Length; i++)
         {
-            for(int i = 0; i < targets.Length; i++) {
-               currentTarget = targets[i];
-                while(transform.position !=  currentTarget.position)
-                {
-                    agent.SetDestination(currentTarget.position);
-                    Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-                }
+            currentTarget = targets[i];
+            while(transform.position != currentTarget.position) { 
+                agent.SetDestination(currentTarget.position);
             }
+            
         }
     }
 

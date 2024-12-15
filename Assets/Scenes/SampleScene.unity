@@ -156,12 +156,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c199034a74a013d4abd64cb1c8621d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTarget: {fileID: 0}
+  currentTarget: {fileID: 1094193142}
   rotationSpeed: 100
   targets:
   - {fileID: 1094193142}
   - {fileID: 1667594299}
   playerSensed: 0
+  player: {fileID: 132221411}
 --- !u!195 &124129125
 NavMeshAgent:
   m_ObjectHideFlags: 0
