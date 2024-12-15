@@ -36,10 +36,6 @@ public class PatrolNavigation : MonoBehaviour
         Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         */
-    }
-
-    public void Patrol()
-    {
         while (!playerSensed)
         {
             for(int i = 0; i < targets.Length; i++) {
@@ -52,5 +48,10 @@ public class PatrolNavigation : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Patrol()
+    {
+        
     }
 }
