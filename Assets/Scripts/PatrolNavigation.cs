@@ -11,18 +11,23 @@ public class PatrolNavigation : MonoBehaviour
     NavMeshAgent agent;
     float distance;
     Rigidbody2D rb;
-    Vector3 facingDirection;
+    public Vector3 facingDirection;
     quaternion rotation;
     [SerializeField] float rotationSpeed;
     [SerializeField] Transform[] targets;
     public int targetNumber;
     public bool playerSensed;
+    [SerializeField] RaycastEnemy rayCast;
     [SerializeField] Transform player;
     float playerDistance;
+    LayerMask mask;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        mask = LayerMask.GetMask("Player");
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody2D>();
         agent.updateRotation = false;
@@ -30,22 +35,26 @@ public class PatrolNavigation : MonoBehaviour
         Patrol();
         targetNumber = 0;
         currentTarget = targets[0];
+        rayCast = GetComponent<RaycastEnemy>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         playerDistance = Vector2.Distance(transform.position, player.position);
-        if (playerDistance <= 5)
-        {
+
+        if(rayCast.TargetHit){
             playerSensed = true;
             currentTarget = player;
+            Debug.Log("Wicked");
         }
        
         agent.SetDestination(currentTarget.position);
         Turn();
         Patrol();
-
+        
+            
+        
     }
 
     public void Patrol()
@@ -63,5 +72,6 @@ public class PatrolNavigation : MonoBehaviour
         facingDirection = agent.velocity;
         Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        //Debug.Log(toRotation.ToString());
     }
 }

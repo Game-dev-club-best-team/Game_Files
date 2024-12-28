@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Walls
   - 
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 3657307891
+    locked: 0
+  - name: Player
+    uniqueID: 2332478125
     locked: 0
