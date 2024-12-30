@@ -22,11 +22,12 @@ public class RaycastEnemy : MonoBehaviour
         rotationRad = (Mathf.Deg2Rad * rotationRad) + (Mathf.PI / 2);
         rayDirection = new Vector2(Mathf.Cos(rotationRad), Mathf.Sin(rotationRad));
         hit = Physics2D.Raycast(transform.position,rayDirection, 100, mask);
-        if (hit && hit)
+        if (hit && hit.collider.CompareTag("Player"))
         {
             Debug.Log(hit.collider.name);
+            TargetHit = true;
         }
-        TargetHit = hit;
+        
        // Debug.Log(rayDirection);
     }
 }
