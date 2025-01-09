@@ -18,11 +18,16 @@ public class PlayerController : MonoBehaviour
     float velocityX;
     float velocityY;
 
+    bool touchScrap;
+
+    Invintory invintory;
+
     InputAction sprint;
 
     void Start()
     {
         sprint = playerInput.actions.FindAction("Sprint");
+        invintory = gameObject.GetComponent<Invintory>();
     }
 
     // Update is called once per frame
@@ -60,5 +65,28 @@ public class PlayerController : MonoBehaviour
     {
         moveSpeed *= sprintMod;
         
+    }
+
+    public void OnInteract()
+    {
+        Debug.Log("Epic");
+        if(touchScrap)
+        {
+
+        }
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        var tag = collision.tag;
+        if (tag.Equals("Scrap")){
+        touchScrap = true;
+        }         
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        var tag = collision.tag;
+        if (tag.Equals("Scrap"))
+            touchScrap = true;
     }
 }
