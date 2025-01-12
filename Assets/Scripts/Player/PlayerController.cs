@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Epic");
         if(touchScrap)
         {
-
+            
         }
     }
 
