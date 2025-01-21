@@ -46,7 +46,6 @@ public class PatrolNavigation : MonoBehaviour
         if(rayCast.TargetHit){
             playerSensed = true;
             currentTarget = player;
-            Debug.Log("Wicked");
         }
        
         agent.SetDestination(currentTarget.position);

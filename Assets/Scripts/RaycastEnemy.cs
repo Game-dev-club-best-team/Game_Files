@@ -24,10 +24,8 @@ public class RaycastEnemy : MonoBehaviour
         hit = Physics2D.Raycast(transform.position,rayDirection, 100, mask);
         if (hit && hit.collider.CompareTag("Player"))
         {
-            Debug.Log(hit.collider.name);
             TargetHit = true;
         }
-        
-       // Debug.Log(rayDirection);
+      
     }
 }

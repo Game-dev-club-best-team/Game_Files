@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TurretManager : MonoBehaviour
@@ -10,30 +11,39 @@ public class TurretManager : MonoBehaviour
     public float rotationSpeed;
     public Rigidbody2D rb;
     public bool waiting;
+    Vector2 facingDirection;
+    Vector2 towardsTarget;
+
+    RaycastEnemy raycastEnemy;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         target = target1;
         waiting = false;
+        raycastEnemy = GetComponent<RaycastEnemy>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 targetDirection = target.localPosition.normalized;
-        Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, targetDirection);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        if(rb.angularVelocity <= 0.1 && waiting == false)
+        if (!waiting)
         {
-            StartCoroutine(TurnCycle());
+            towardsTarget = new Vector2(target.position.x, target.position.y) - rb.position;
+            facingDirection = raycastEnemy.rayDirection;
+            float angle = (Mathf.Atan2(towardsTarget.y, towardsTarget.x) - (Mathf.PI / 2)) * Mathf.Rad2Deg;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, q, Time.deltaTime * rotationSpeed);
+            if (transform.rotation.z < q.z + 0.01 && transform.rotation.z > q.z - 0.01)
+            {
+                StartCoroutine(TurnCycle());
+            }
         }
-        Debug.Log(targetDirection);
-        Debug.Log(toRotation);
     }
 
   public IEnumerator TurnCycle()
     {
+        waiting = true;
         if(target == target1)
         {
             target = target2;
@@ -42,8 +52,8 @@ public class TurretManager : MonoBehaviour
         {
             target = target1;
         }
-        waiting = true;
-        yield return new WaitForSecondsRealtime(1.5f);
+        
+        yield return new WaitForSecondsRealtime(1f);
         waiting = false;
     }
 }
