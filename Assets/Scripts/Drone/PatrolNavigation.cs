@@ -21,8 +21,9 @@ public class PatrolNavigation : MonoBehaviour
     [SerializeField] Transform player;
     float playerDistance;
     LayerMask mask;
-
-
+    public GameObject bullet;
+    public GameObject shell;
+    bool firing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +37,7 @@ public class PatrolNavigation : MonoBehaviour
         targetNumber = 0;
         currentTarget = targets[0];
         rayCast = GetComponent<RaycastEnemy>();
+
     }
 
     // Update is called once per frame
@@ -46,19 +48,29 @@ public class PatrolNavigation : MonoBehaviour
         if(rayCast.TargetHit){
             playerSensed = true;
             currentTarget = player;
+            agent.stoppingDistance = 2;
+            if (!firing)
+            {
+                firing = true;
+                StartCoroutine(shootReload());
+            }
+
         }
        
         agent.SetDestination(currentTarget.position);
         Turn();
         Patrol();
-        
+        if (Math.Abs(rb.velocity.magnitude) == 0)
+        {
+
+        }
             
         
     }
 
     public void Patrol()
     {
-        if(Vector2.Distance(transform.position, currentTarget.position) <= 0.01 && currentTarget != player) {
+        if(Vector2.Distance(transform.position, currentTarget.position) <= 1 && currentTarget != player) {
             targetNumber++;
             if(targetNumber == targets.Length)
                 targetNumber = 0;
@@ -72,5 +84,14 @@ public class PatrolNavigation : MonoBehaviour
         Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, facingDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         //Debug.Log(toRotation.ToString());
+    }
+
+    public IEnumerator shootReload()
+    {
+        Instantiate(bullet, transform.position, transform.rotation);
+        Instantiate(shell, transform.position, transform.rotation);
+        yield return new WaitForSecondsRealtime(1);
+        if(firing)
+        StartCoroutine(shootReload());
     }
 }
